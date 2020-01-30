@@ -5,6 +5,8 @@
 declare -r TREX_DIR="/opt/trex"
 declare -r TREX_AZURE_DIR=$TREX_DIR"/azure"
 declare -r INSTALL_LOG=$TREX_AZURE_DIR"/install.log"
+declare -r CFG_TEMPLATE_URL="https://raw.githubusercontent.com/vakalapa/trex-core/5d999d492635f9888e9c4829a32aca7e2ddc6d81/scripts/automation/config/trex_cfg_azure.cfg"
+declare -r CFG_LOCATION="/etc/trex_cfg.yaml"
 
 ITERATION="unknown"
 
@@ -83,3 +85,10 @@ else
     echo "Trex package already exists." >> $INSTALL_LOG
 fi
 
+
+if [[ ! -f $CFG_LOCATION ]]; then
+    sudo curl -o /etc/trex_cfg.cfg $CFG_TEMPLATE_URL
+    echo "Pulled TREX_CFG file from URL." >> $INSTALL_LOG
+fi
+
+echo "End of Trex config. Please edit $CFG_LOCATION file to update local and remote IPs" >> $INSTALL_LOG
