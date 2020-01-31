@@ -53,7 +53,7 @@ if [[ $hugepages_output == *"4096"* ]]; then
     echo "Proc meminfo contains 4096 free huge pages."  >> $INSTALL_LOG
 else
     #Adding hugepages to grub cmdline
-    sudo sed 's/net.ifnames=0/net.ifnames=0 hugepages=4096/g' /etc/default/grub
+    sudo sed -i 's/net.ifnames=0/net.ifnames=0 hugepages=4096/g' /etc/default/grub
     sudo grub2-mkconfig -o /boot/grub2/grub.cfg
     echo "Updated grub file with hugepages. VM needs Reboot."  >> $INSTALL_LOG
     NEEDS_REBOOT="true"
