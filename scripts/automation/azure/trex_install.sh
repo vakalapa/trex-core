@@ -81,6 +81,7 @@ fi
 echo "End of Trex config. Please edit $CFG_LOCATION file to update local and remote IPs" >> $INSTALL_LOG
 
 if [ ! -z $NEEDS_REBOOT ]; then
-    echo "Rebooting now" >> $INSTALL_LOG
-    sudo reboot now
+    echo "Rebooting in 1 minute" >> $INSTALL_LOG
+    sudo shutdown -r +1
+    exit 0
 fi
