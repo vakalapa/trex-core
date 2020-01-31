@@ -3,6 +3,7 @@
 # This script to be run in Centos 7.5 machine in azure to install Trex.
 
 declare -r TREX_DIR="/opt/trex"
+declare -r TREX_TAR_FILE="/opt/trex/latest"
 declare -r TREX_AZURE_DIR=$TREX_DIR"/azure"
 declare -r INSTALL_LOG=$TREX_AZURE_DIR"/install.log"
 declare -r CFG_TEMPLATE_URL="https://raw.githubusercontent.com/vakalapa/trex-core/5d999d492635f9888e9c4829a32aca7e2ddc6d81/scripts/automation/config/trex_cfg_azure.cfg"
@@ -52,7 +53,7 @@ if [[ $hugepages_output == *"4096"* ]]; then
     echo "Proc meminfo contains 4096 free huge pages."  >> $INSTALL_LOG
 else
     #Adding hugepages to grub cmdline
-    sudo sed 's/rootdelay=300/rootdelay=300 hugepages=4096/g' /etc/default/grub
+    sudo sed 's/net.ifnames=0/net.ifnames=0 hugepages=4096/g' /etc/default/grub
     sudo grub2-mkconfig -o /boot/grub2/grub.cfg
     echo "Updated grub file with hugepages. VM needs Reboot."  >> $INSTALL_LOG
     NEEDS_REBOOT="true"
@@ -67,23 +68,10 @@ else
      echo "/mnt/huge exists." >> $INSTALL_LOG 
 fi
 
-if [ -z "$NEEDS_REBOOT" ]; then
-    sudo reboot now
-fi
-
-#Get Trex package.
-
-cd $TREX_DIR
-ls latest
-
-if [ $? == 1 ]; then
-    wget --no-cache https://trex-tgn.cisco.com/trex/release/latest
-    tar -xzvf latest
-    echo "Pulled TRex tarz and expanded it." >> $INSTALL_LOG
-else
-    echo "Trex package already exists." >> $INSTALL_LOG
-fi
-
+pwd >> $INSTALL_LOG
+wget --no-cache https://trex-tgn.cisco.com/trex/release/latest
+tar -xzvf latest -C $TREX_DIR
+echo "Pulled TRex tarz and expanded it." >> $INSTALL_LOG
 
 if [[ ! -f $CFG_LOCATION ]]; then
     sudo curl -o /etc/trex_cfg.cfg $CFG_TEMPLATE_URL
@@ -91,3 +79,8 @@ if [[ ! -f $CFG_LOCATION ]]; then
 fi
 
 echo "End of Trex config. Please edit $CFG_LOCATION file to update local and remote IPs" >> $INSTALL_LOG
+
+if [ ! -z $NEEDS_REBOOT ]; then
+    echo "Rebooting now" >> $INSTALL_LOG
+    sudo reboot now
+fi
