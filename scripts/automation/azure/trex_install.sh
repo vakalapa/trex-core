@@ -8,6 +8,7 @@ declare -r TREX_AZURE_DIR=$TREX_DIR"/azure"
 declare -r INSTALL_LOG=$TREX_AZURE_DIR"/install.log"
 declare -r CFG_TEMPLATE_URL="https://raw.githubusercontent.com/vakalapa/trex-core/5d999d492635f9888e9c4829a32aca7e2ddc6d81/scripts/automation/config/trex_cfg_azure.cfg"
 declare -r CFG_LOCATION="/etc/trex_cfg.yaml"
+declare -r ROUTE_FILE="/etc/sysconfig/network-scripts/route-eth0"
 
 ITERATION="unknown"
 
@@ -79,6 +80,15 @@ if [[ ! -f $CFG_LOCATION ]]; then
 fi
 
 echo "End of Trex config. Please edit $CFG_LOCATION file to update local and remote IPs" >> $INSTALL_LOG
+
+if [ ! -f $ROUTE_FILE ]; then
+    echo "16.0.0.0/8 via 10.0.1.5 dev eth1
+48.0.0.0/8 via 10.0.2.5 dev eth2" > $ROUTE_FILE
+else
+    echo "16.0.0.0/8 via 10.0.1.5 dev eth1
+48.0.0.0/8 via 10.0.2.5 dev eth2" >> $ROUTE_FILE
+fi
+echo "Adding routes to $ROUTE_FILE" >> $INSTALL_LOG
 
 if [ ! -z $NEEDS_REBOOT ]; then
     echo "Rebooting in 1 minute" >> $INSTALL_LOG
