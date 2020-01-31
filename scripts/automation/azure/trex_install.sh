@@ -32,8 +32,7 @@ echo "Boot iteration is $ITERATION" >> $INSTALL_LOG
 
 # Check for number of Mellanox devices. If less than 2 then exit out of script.
 devnum=$(lspci | grep Mell | wc -l)
-if [$devnum -gt 1]
-then
+if [ $devnum -gt 1 ]; then
     echo "This VM has $devnum Mellanox interfaces" >> $INSTALL_LOG
 else
     echo "This VM has only $devnum Mellanox interfaces. Recommended number is 2. Exiting out" >> $INSTALL_LOG
