@@ -6,7 +6,7 @@ declare -r TREX_DIR="/opt/trex"
 declare -r TREX_TAR_FILE="/opt/trex/latest"
 declare -r TREX_AZURE_DIR=$TREX_DIR"/azure"
 declare -r INSTALL_LOG=$TREX_AZURE_DIR"/install.log"
-declare -r CFG_TEMPLATE_URL="https://raw.githubusercontent.com/vakalapa/trex-core/5d999d492635f9888e9c4829a32aca7e2ddc6d81/scripts/automation/config/trex_cfg_azure.cfg"
+declare -r CFG_TEMPLATE_URL="https://raw.githubusercontent.com/vakalapa/trex-core/44af4549a113f28b1ec5418a4c3ec4e3ddea2c90/scripts/automation/config/trex_cfg_azure.cfg"
 declare -r CFG_LOCATION="/etc/trex_cfg.yaml"
 declare -r ROUTE_FILE="/etc/sysconfig/network-scripts/route-eth0"
 
