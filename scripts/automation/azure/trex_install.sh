@@ -75,7 +75,7 @@ tar -xzvf latest -C $TREX_DIR
 echo "Pulled TRex tarz and expanded it." >> $INSTALL_LOG
 
 if [[ ! -f $CFG_LOCATION ]]; then
-    sudo curl -o /etc/trex_cfg.cfg $CFG_TEMPLATE_URL
+    sudo curl -o /etc/trex_cfg.yaml $CFG_TEMPLATE_URL
     echo "Pulled TREX_CFG file from URL." >> $INSTALL_LOG
 fi
 
